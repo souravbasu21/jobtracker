@@ -4,7 +4,7 @@ A minimally viable Flutter application for tracking job applications. The app is
 
 ## Overview
 
-Job Tracker helps users maintain a small application pipeline with company, role, location, status, applied date, and notes. It currently stores data in memory, which keeps the project easy to understand for beginners and simple to extend later with local storage, Firebase, REST APIs, or a more advanced state management approach.
+Job Tracker helps users maintain a small application pipeline with company, role, location, status, applied date, and notes. It stores the job list locally using SharedPreferences, which keeps the project easy to understand for beginners and simple to extend later with SQLite, Firebase, REST APIs, or a more advanced state management approach.
 
 ## Features
 
@@ -20,6 +20,7 @@ Job Tracker helps users maintain a small application pipeline with company, role
   - Rejected
 - Filter jobs by status
 - View a summary of applications by status
+- Persist jobs locally after the app is closed
 - Basic widget test for the add-job flow
 
 ## Tech Stack
@@ -28,6 +29,7 @@ Job Tracker helps users maintain a small application pipeline with company, role
 - Dart
 - Material 3
 - ChangeNotifier for simple local state updates
+- SharedPreferences for local persistence
 - Flutter widget testing
 
 ## Project Structure
@@ -40,6 +42,8 @@ lib/
     job_application.dart
   repositories/
     job_repository.dart
+  services/
+    job_storage.dart
   screens/
     job_list_screen.dart
     job_form_screen.dart
@@ -56,6 +60,7 @@ test/
 - `lib/app.dart` defines the root `MaterialApp`, theme, and first screen.
 - `lib/models/job_application.dart` contains the job data model and status enum.
 - `lib/repositories/job_repository.dart` manages the in-memory job list.
+- `lib/services/job_storage.dart` saves and loads jobs with SharedPreferences.
 - `lib/screens/job_list_screen.dart` displays the dashboard, filters, and job cards.
 - `lib/screens/job_form_screen.dart` handles adding and editing jobs.
 - `lib/widgets/job_card.dart` renders a single job application card.
@@ -112,14 +117,14 @@ dart format lib test
 
 ## Current Limitations
 
-- Data is stored in memory only.
-- Jobs are reset when the app restarts.
+- Data is stored locally on the device only.
 - There is no authentication.
-- There is no backend or database integration yet.
+- There is no backend or cloud sync yet.
+- SharedPreferences is suitable for small local data. For larger datasets, SQLite or Drift would be a better fit.
 
 ## Possible Next Improvements
 
-- Add persistent storage with SQLite, Hive, SharedPreferences, or Firebase
+- Replace SharedPreferences with SQLite, Drift, Hive, or Firebase for larger apps
 - Add search
 - Add due dates and reminders
 - Add company/contact details
