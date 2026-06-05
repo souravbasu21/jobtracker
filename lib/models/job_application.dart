@@ -8,6 +8,13 @@ enum JobStatus {
   const JobStatus(this.label);
 
   final String label;
+
+  static JobStatus fromName(String name) {
+    return JobStatus.values.firstWhere(
+      (status) => status.name == name,
+      orElse: () => JobStatus.wishlist,
+    );
+  }
 }
 
 class JobApplication {
@@ -47,5 +54,31 @@ class JobApplication {
       location: location ?? this.location,
       notes: notes ?? this.notes,
     );
+  }
+
+  factory JobApplication.fromJson(Map<String, dynamic> json) {
+    return JobApplication(
+      id: json['id'] as String? ?? '',
+      company: json['company'] as String? ?? '',
+      role: json['role'] as String? ?? '',
+      status: JobStatus.fromName(json['status'] as String? ?? ''),
+      appliedDate:
+          DateTime.tryParse(json['appliedDate'] as String? ?? '') ??
+          DateTime.now(),
+      location: json['location'] as String? ?? '',
+      notes: json['notes'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'company': company,
+      'role': role,
+      'status': status.name,
+      'appliedDate': appliedDate.toIso8601String(),
+      'location': location,
+      'notes': notes,
+    };
   }
 }
